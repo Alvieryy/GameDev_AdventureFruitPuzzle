@@ -9,7 +9,7 @@ public class Main {
 		JFrame window = new JFrame();
 		 window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 window.setResizable(false);
-		 window.setTitle("2D Adventure Game");
+		 window.setTitle("ADVENTURE FRUIT PUZZLE");
 		 window.setLocationRelativeTo(null);
 		 
 		 GamePanel panel = new GamePanel();
