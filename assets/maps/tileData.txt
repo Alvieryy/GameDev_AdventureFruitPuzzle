@@ -1,0 +1,34 @@
+Bush Forest.png
+false
+Grass.png
+false
+Tall Grass.png
+false
+Trail inner 1 (1).png
+false
+Trail inner 1 (2).png
+false
+Trail inner 1 (3).png
+false
+Trail inner 1 (4).png
+false
+Trail inner 1 (5).png
+false
+Trail outer 1 (1).png
+false
+Trail outer 1 (2).png
+false
+Trail outer 1 (3).png
+false
+Trail outer 1 (4).png
+false
+Trail outer 1 (5).png
+false
+Trail outer 1 (6).png
+false
+Trail outer 1 (7).png
+false
+Trail outer 1 side.png
+false
+tree.png
+true

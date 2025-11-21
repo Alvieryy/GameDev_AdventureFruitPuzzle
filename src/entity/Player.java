@@ -24,6 +24,8 @@ public class Player extends Entity{
 		screenY = gp.screenHeight/2 - (gp.tileSize / 2);
 		
 		nonPassable = new Rectangle(0, 0, 32, 32);
+		solidAreaDefaultX = nonPassable.x;
+		solidAreaDefaultY = nonPassable.y;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -31,8 +33,8 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 		
-		worldX = gp.tileSize * 25;
-		worldY = gp.tileSize * 25;
+		worldX = gp.tileSize * 23;
+		worldY = gp.tileSize * 21;
 		speed = 4;
 		direction = "down";
 		
@@ -82,7 +84,10 @@ public class Player extends Entity{
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
 			
-			//if player collision is false, player can mode
+			//check object collision
+			int objIndex = gp.cChecker.checkObject(this, true);
+			
+			//if player collision is false, player can move
 			if(collisionOn == false) {
 				switch(direction) {
 				case "up":
