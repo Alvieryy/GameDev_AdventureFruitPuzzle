@@ -10,7 +10,7 @@ public class OBJ_Chest extends SuperObject{
 
         name = "Chest";
 
-        try {                                                                           
+        try {                                                                          
         	
         	image = ImageIO.read(getClass().getResourceAsStream("/objects/chest.png"));
             
@@ -18,6 +18,7 @@ public class OBJ_Chest extends SuperObject{
             e.printStackTrace();
 
         }
+        collisions = true;
 
     }
 

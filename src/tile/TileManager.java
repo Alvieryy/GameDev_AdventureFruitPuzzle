@@ -11,12 +11,16 @@ import javax.imageio.ImageIO;
 public class TileManager {
 
 	GamePanel gp;
-	public Tile[] tile; 
+	public Tile[] tile;
+	public Tile[] tile2; 
 	public int mapTileNum[][];
+	public boolean useForestTiles = false;
+
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		tile = new Tile[20];
+		tile = new Tile[30];
+		tile2 = new Tile[30];
 		mapTileNum = new int [gp.maxWorldCol][gp.maxWorldRow];
 		getTileImage();
 		loadmap("/maps/WorldMap1.1.txt");
@@ -46,66 +50,66 @@ public class TileManager {
 			tile[5] = new Tile();
 			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tile/sand.png")); 
 			
-//			tile[0] = new Tile();
-//			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Bush Forest.png"));
-//			tile[0].collision = true;
+//			tile2[0] = new Tile();
+//			tile2[0].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Bush Forest.png"));
+//			tile2[0].collision = true;
 //			
-//			tile[1] = new Tile();
-//			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Grass.png"));
+//			tile2[1] = new Tile();
+//			tile2[1].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Grass.png"));
 //
 //			
-//			tile[2] = new Tile();
-//			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Tall Grass.png"));
+//			tile2[2] = new Tile();
+//			tile2[2].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Tall Grass.png"));
 //
 //			
-//			tile[3] = new Tile();
-//			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (1).png"));
+//			tile2[3] = new Tile();
+//			tile2[3].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (1).png"));
 //			
-//			tile[4] = new Tile();
-//			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (2).png"));
+//			tile2[4] = new Tile();
+//			tile2[4].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (2).png"));
 //
 //			
-//			tile[5] = new Tile();
-//			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (3).png")); 
+//			tile2[5] = new Tile();
+//			tile2[5].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (3).png")); 
 //			
-//			tile[6] = new Tile();
-//			tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (4).png"));
+//			tile2[6] = new Tile();
+//			tile2[6].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (4).png"));
 //			
-//			tile[7] = new Tile();
-//			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (5).png"));
+//			tile2[7] = new Tile();
+//			tile2[7].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail inner 1 (5).png"));
 //
 //			
-//			tile[8] = new Tile();
-//			tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (1).png"));
+//			tile2[8] = new Tile();
+//			tile2[8].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (1).png"));
 //
 //			
-//			tile[9] = new Tile();
-//			tile[9].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (2).png"));
+//			tile2[9] = new Tile();
+//			tile2[9].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (2).png"));
 //			
-//			tile[10] = new Tile();
-//			tile[10].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (3).png"));
+//			tile2[10] = new Tile();
+//			tile2[10].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (3).png"));
 //
 //			
-//			tile[11] = new Tile();
-//			tile[11].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (4).png")); 
+//			tile2[11] = new Tile();
+//			tile2[11].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (4).png")); 
 //			
-//			tile[12] = new Tile();
-//			tile[12].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (5).png"));
+//			tile2[12] = new Tile();
+//			tile2[12].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (5).png"));
 //			
-//			tile[13] = new Tile();
-//			tile[13].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (6).png"));
+//			tile2[13] = new Tile();
+//			tile2[13].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (6).png"));
 //
 //			
-//			tile[14] = new Tile();
-//			tile[14].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (7).png"));
+//			tile2[14] = new Tile();
+//			tile2[14].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 (7).png"));
 //
 //			
-//			tile[15] = new Tile();
-//			tile[15].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 side.png"));
+//			tile2[15] = new Tile();
+//			tile2[15].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/Trail outer 1 side.png"));
 //			
-//			tile[16] = new Tile();
-//			tile[16].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/tree.png"));
-//			tile[16].collision = true;
+//			tile2[16] = new Tile();
+//			tile2[16].image = ImageIO.read(getClass().getResourceAsStream("/tile/forest/tree.png"));
+//			tile2[16].collision = true;
 			
 			
 			
@@ -168,6 +172,11 @@ public class TileManager {
 			   worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
 			   worldY + gp.tileSize > gp.player.worldY - gp.player.screenY && 
 			   worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+//				if(useForestTiles) {
+//				    g2.drawImage(tile2[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+//				} else {
+//				    g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+//				}
 				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);				
 			}
 			worldCol++;

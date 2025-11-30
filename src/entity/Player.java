@@ -2,6 +2,9 @@ package entity;
 
 import gamedev.GamePanel;
 import gamedev.KeyHandler;
+import tile.TileManager;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,7 +18,13 @@ public class Player extends Entity{
 
 	public final int screenX;
 	public final int screenY; 
-	int haskey, hasBoots = 0;
+	public int haskey, hasApple, hasOrange, hasBoots = 0;
+	int speedUp = 0;
+	public TileManager world2;
+	boolean moving = false;
+	int pixelCounter = 0;
+	int standCounter = 0;
+	
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -24,9 +33,13 @@ public class Player extends Entity{
 		screenX = gp.screenWidth/2 - (gp.tileSize / 2);
 		screenY = gp.screenHeight/2 - (gp.tileSize / 2);
 		
-		solidArea = new Rectangle(0, 0, 32, 32);
+		solidArea = new Rectangle();
+		solidArea.x = 1;
+		solidArea.y = 1;
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
+		solidArea.width = 46;
+		solidArea.height = 46;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -62,34 +75,40 @@ public class Player extends Entity{
 	
 	public void update() {
 		
-		if(keyH.upPressed == true || keyH.downPressed == true 
-				|| keyH.leftPressed == true || keyH.rightPressed) {
-			if(keyH.upPressed == true) {
-				direction = "up";
+		if(moving == false) {
+			if(keyH.upPressed == true || keyH.downPressed == true 
+					|| keyH.leftPressed == true || keyH.rightPressed) {
+				if(keyH.upPressed == true) {
+					direction = "up";
+				}
+				else if(keyH.downPressed == true) {
+					direction = "down";
+				}
+				else if(keyH.leftPressed == true) {
+					direction = "left";
+				}
+				else if(keyH.rightPressed == true) {
+					direction = "right";
+				}
 				
+				moving = true;
+
+				collisionOn = false;
+				gp.cChecker.checkTile(this);
+
+				int objIndex = gp.cChecker.checkObject(this, true);
+				pickUpObj(objIndex);
 			}
-			else if(keyH.downPressed == true) {
-				direction = "down";
-				
+			else {
+				standCounter++;
+				if(standCounter == 20) {
+					spriteNum = 1;
+					standCounter = 0;
+				}
 			}
-			else if(keyH.leftPressed == true) {
-				direction = "left";
-				
-			}
-			else if(keyH.rightPressed == true) {
-				direction = "right";
-				
-			}
-			
-			//check collision
-			collisionOn = false;
-			gp.cChecker.checkTile(this);
-			
-			//check object collision
-			int objIndex = gp.cChecker.checkObject(this, true);
-			pickUpObj(objIndex);
-			
-			//if player collision is false, player can move
+		}
+
+		if(moving == true) {
 			if(collisionOn == false) {
 				switch(direction) {
 				case "up":
@@ -104,10 +123,9 @@ public class Player extends Entity{
 				case "right":
 					worldX += speed;
 					break;
-					
 				}
 			}
-			
+
 			spriteCounter++;
 			if(spriteCounter > 12) {
 				if(spriteNum == 1) {
@@ -118,8 +136,16 @@ public class Player extends Entity{
 				}
 				spriteCounter = 0;
 			}
+
+			pixelCounter += speed;
+
+			if(pixelCounter == 48) {
+				moving = false;
+				pixelCounter = 0;
+			}
 		}
 	}
+
 	
 	public void pickUpObj(int i) {
 		
@@ -127,23 +153,90 @@ public class Player extends Entity{
 			String objectName = gp.obj[i].name;
 			switch(objectName) {
 			case "Key":
+				gp.playSE(1);
 				haskey++;
 				gp.obj[i] = null;
-				System.out.println("key:" + haskey);
+				gp.ui.showMessage("Key picked-up!");
 				break;
+//			case "Door":
+//			    gp.playSE(3);
+//
+//			    if(i == 4) {
+//			        if(haskey > 0) {
+//			            gp.ui.gameFinished = true;
+//			            gp.stopMusic();
+//			            gp.playSE(4);
+//			        } else {
+//			            gp.ui.showMessage("You need a key to unlock this door!");
+//			        }
+//			    } else {
+//			        if(haskey > 0) {
+//			            haskey--;
+//			            gp.obj[i] = null;
+//			        } else {
+//			            gp.ui.showMessage("You need a key to open a door!");
+//			        }
+//			    }
+//
+//			    break;
 			case "Door":
-				if(haskey > 0) {
-					gp.obj[i] = null;
-					haskey--;
-				}
-				System.out.println("key:" + haskey);
-				break;
+			    gp.playSE(3);
+
+			    if(i == 4) {
+			        if(haskey > 0) {
+			        	gp.ui.gameFinished = true;
+			        	gp.stopMusic();
+			        	gp.playSE(4);
+			            haskey--;
+//			            gp.tileM.useForestTiles = true;
+//			            world2.loadmap("/maps/WorldMap2.txt")
+			            
+			            
+			            gp.ui.showMessage("Map Loaded!");
+			            break;
+			        }
+			    }
+			    else {
+			        if(haskey > 0) {
+			        	
+			            haskey--;
+			            gp.obj[i] = null;
+			        } else {
+			            gp.ui.showMessage("You need a key to open a door!");
+			        }
+			    }
+
+			    break;
+
 			case "Boots":
 				
-				hasBoots++;
+				gp.playSE(2);
+				speed += 2;
+				if(speedUp > 120) {
+					speed-=2;
+				}
 				gp.obj[i] = null;
-				System.out.println("Boots:" + hasBoots);
+				gp.ui.showMessage("Speedup!");
 				
+				
+//				hasBoots++;
+//				gp.obj[i] = null;
+//				System.out.println("Boots:" + hasBoots);
+				
+				break;
+			case "Apple":
+				hasApple++;
+				gp.obj[i] = null;
+				gp.ui.showMessage("Apple picked up!");
+				break;
+				
+			case "Orange":
+				hasOrange++;
+				gp.obj[i] = null;	
+				gp.ui.showMessage("Orange picked up!");
+				break;
+			case "Chest":
+				gp.ui.showMessage("");
 				break;
 			}
 		}
@@ -192,5 +285,8 @@ public class Player extends Entity{
 			break;
 		}
 		g2.drawImage( image, screenX, screenY, gp.tileSize, gp.tileSize, null); 
+		//collision rect
+		g2.setColor(Color.RED);
+		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 }
