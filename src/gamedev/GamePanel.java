@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Scanner;
+
 import javax.swing.JPanel;
 import object.SuperObject;
 import tile.TileManager;
@@ -32,18 +36,25 @@ public class GamePanel extends JPanel implements Runnable{
 	KeyHandler keyH = new KeyHandler(this); 
 	Sound music = new Sound();
 	Sound se = new Sound();
-	Thread gameThread;
+	
 	public Collisions cChecker = new Collisions(this);
 	public AssetSetter aSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
 	public Player player = new Player(this, keyH);
 	public SuperObject obj[] = new SuperObject[50];
+	Thread gameThread;
+	
+	
+	//PLAYER SKINS
+	public int playerSkin = 1;
+	
 	
 	//GAME STATE
 	public final int titleState = 0;
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int characterState = 3;
 	
 	
 	
@@ -53,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
 		this.setFocusable(true);
+		loadSkin();
 	}
 	
 	public void setupGame(){
@@ -158,8 +170,28 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 
 	public void playSE(int i){
-		se.setFile(i);
-		se.play();
+		System.out.println("Loading sound: " + se.soundURL[i]);
+	    se.setFile(i);
+	    se.play();
+	}
+	
+	public void saveSkin() {
+	    try {
+	        FileWriter fw = new FileWriter("skin.dat");
+	        fw.write(String.valueOf(playerSkin));
+	        fw.close();
+	    } catch (Exception e) {}
+	}
+
+	public void loadSkin() {
+	    try {
+	        File file = new File("skin.dat");
+	        if(file.exists()) {
+	            Scanner sc = new Scanner(file);
+	            playerSkin = Integer.parseInt(sc.nextLine());
+	            sc.close();
+	        }
+	    } catch (Exception e) {}
 	}
 	
 }
